@@ -31,8 +31,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Mono<EmployeeDTO> getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .map(mapper::employeeToEmployeeDTO)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException(String.format("Employee details not found for given id : %s", id))))
+                .map(mapper::employeeToEmployeeDTO)
                 .onErrorMap(e -> new DBAccessException("Error occurred while accessing the repository : " + e.getMessage()));
     }
 
